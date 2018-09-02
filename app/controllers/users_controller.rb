@@ -6,6 +6,10 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    # current_user以外はindexへ移動させる
+    unless @user == current_user
+      redirect_to root_url
+    end
     @tasks = @user.tasks.order('created_at DESC').page(params[:page])
     counts(@user)
   end
@@ -31,5 +35,6 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
+  
   
 end
